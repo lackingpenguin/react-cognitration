@@ -1,0 +1,6 @@
+{
+  "short_name": "Cognitration",
+  "name": "Cognitration",
+  "start_url": "./index.html",
+  "display": "standalone"
+}

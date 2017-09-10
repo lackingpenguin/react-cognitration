@@ -1,0 +1,359 @@
+/* ==========================================================================
+	 Styles for the game of Cognitration
+	 ========================================================================== */
+.cognitration {
+	height: 375px;
+	width: 535px;
+	font-family: 'Open Sans', sans-serif;
+	margin: 0 auto;
+	position: relative;
+	left: -80px;
+	
+	* { box-sizing: border-box; }
+
+	// Scale game down on small screens
+	@media only screen and (max-width: 600px)  { 
+		transform: scale(.5); 
+		transform-origin:left top;
+		left: 0;
+	}
+	
+/* Components
+	 ========================================================================== */
+	
+	// Button used to reset the game
+	.game-button {
+		width: 91px;
+		height: 30px;
+		background-size: contain;
+		border: none;
+		background-color: transparent;
+		background-repeat: no-repeat;
+		display: block;
+		margin: 0 auto;
+		cursor: pointer;
+		outline: none;
+		text-indent: -9999px;
+
+		&.game-button-small {
+			width: 72px;
+			height: 20px;
+		}
+
+		&.game-button-play {
+			background-image: url(./img/play_2x.png);      
+			&:hover { background-image: url(./img/play_rollover_2x.png); }
+		}
+
+		&.game-button-restart {
+			background-image: url(./img/restart_2x.png);      
+			&:hover { background-image: url(./img/restart_rollover_2x.png); }
+		}
+
+		&.game-button-replay {
+			background-image: url(./img/replay_2x.png);      
+			&:hover { background-image: url(./img/replay_rollover_2x.png); }
+		}
+	}
+
+	// Used to add some bling to the different screens
+	.star {
+		background-image: url(./img/star2_2x.png);
+		background-size: contain;
+		background-repeat: no-repeat;
+
+		&.star-lg {
+			width: 40px;
+			height: 40px;
+		}
+		&.star-md {
+			width: 30px;
+			height: 30px;
+		}
+		&.star-sm {
+			width: 20px;
+			height: 20px;
+		}
+
+		@keyframes spinFadeIn {
+			0% {
+				opacity: 0;
+				transform: scale(0) rotate(0deg);   
+			}
+			50% {
+				opacity: 0.5;
+				transform: scale(1.8) rotate(100deg);
+			}
+
+			100% {
+				opacity: 1;
+				transform: scale(1) rotate(100deg);
+			} 
+		}
+
+		@keyframes spinFadeInReverse {
+			0% {
+				opacity: 0;
+				transform: scale(0) rotate(0deg);   
+			}
+			100% {
+				opacity: 1;
+				transform: scale(1) rotate(-360deg);
+			} 
+		}
+	}
+	
+
+	// A single unit of the tile grid, basically a square that shows an image when clicked
+	.tile {
+		display: block;
+		width: 75px;
+		height: 75px;
+		border: 2px solid #7dc836;
+		float: left;
+		background-size: contain;
+		position: relative;
+
+		&.show-image { 
+			.tile-img-cover { visibility: hidden; }
+			.stars {
+				.star-1,
+				.star-2,
+				.star-3 {
+					animation-name: starSparkle;
+				}
+
+				.star-1 { animation-delay: .15s; animation-duration: .3s }
+				.star-2 { animation-delay: .05s; animation-duration: .4s }
+				.star-3 { animation-delay: 0s; animation-duration: .35s }
+	
+				@keyframes starSparkle {
+					0% {
+						opacity: 0;
+						transform: scale(0) rotate(0deg);
+						visibility: visible;
+					}
+					50% {
+						opacity: 0.8;
+						transform: scale(1.5) rotate(80deg); 
+					} 
+					100% {
+						opacity: 0;
+						transform: scale(1) rotate(160deg);
+					}   
+				}
+			}
+		}
+
+		&.conquered { 
+			visibility: hidden; 
+		}
+
+		.tile-img-cover {
+			position: absolute;
+			top: -2px;
+			left: -2px;
+			border: none;
+			cursor: pointer;
+			width: 75px;
+			height: 75px;
+			background-size: contain;
+			z-index: 1;
+			background-image: url('./img/grid_2x.png');
+			&:hover {       
+				background-image: url('./img/grid_rollover_2x.png');
+			}
+
+		}
+
+		.stars {
+
+			.star-1,
+			.star-2,
+			.star-3 {
+				visibility: hidden;
+				position: absolute;
+				z-index: 2;
+				filter: drop-shadow(0px 0px 3px rgba(0,0,0,0.5));
+			}
+
+			.star-1 { top: 14px; left: 17px; }
+			.star-2 { top: 23px; left: 37px; }
+			.star-3 { top: 40px; left: 18px; }
+		}
+
+
+	} 
+
+	/* Game Screens
+	 ========================================================================== */
+	
+	// The first screen the user sees, has instructions and a play button
+	.start-screen {
+		color: white;
+		width: 375px;
+		height: 375px;
+		float: right;
+		position: relative;
+		background-size: contain;
+		
+		.start-screen-instructions {
+			text-align: center;
+			width: 281px;
+			margin: 57px auto 45px auto;
+			font-size: 13px;
+			line-height: 1.5;
+		}
+
+		.star {
+			position: absolute;
+			animation-fill-mode: forwards;
+			opacity: 0;
+
+			&:nth-child(even) { animation-name: spinFadeIn; }
+			&:nth-child(odd) { animation-name: spinFadeInReverse; }
+		}
+
+		.star-1 { bottom: 10px; left: 15px; animation-duration: 1s;  animation-delay: 0; }
+		.star-2 { top: 130px; left: 80px;   animation-duration: .6s; animation-delay: .45s; }
+		.star-3 { top: 110px; left: 300px;  animation-duration: .5s; animation-delay: .25s; }
+		.star-4 { top: 300px; left: 240px;  animation-duration: .5s; animation-delay: .27s; }
+		.star-5 { top: 160px; left: 30px;   animation-duration: .4s; animation-delay: .44s; }
+		.star-6 { top: 280px; left: 280px;  animation-duration: .8s; animation-delay: .28s; }
+		.star-7 { top: 250px; left: 120px;  animation-duration: .7s; animation-delay: .29s; }
+		.star-8 { top: 150px; left: 250px;  animation-duration: .4s; animation-delay: .42s;}
+	}
+	
+	// The screen where the game is played
+	.game-board {
+
+		.tile-grid {
+			position: relative;
+			float: right;
+			background-size: cover;
+			padding: 0;
+			margin: 0;
+			width: 375px;
+			height: 375px;
+		}
+
+		.stat-box {
+			color: white;
+			font-size: 16px;
+			
+			.stat-box-label { font-weight: bold; }
+
+			.stat-box-number {
+				width: 90px;
+				border: 1px solid white;
+				background: rgb(79,137, 27);
+				padding: 3px 5px;
+				margin-bottom: 30px;
+			}
+			
+		}
+
+		.game-button {
+			margin: 6px 10px;
+		}
+	}
+
+	// The screen shown when the user wins
+	.victory-screen {
+		width: 375px;
+		height: 375px;
+		float: right;
+		position: relative;
+		text-align: center;
+		background-size: contain;
+
+		.bottle-image {
+			visibility: hidden;
+			margin: 30px 0 15px 0;
+			animation-name: fadeAndGrowIn;
+			animation-duration: .75s; 
+			animation-timing-function: ease-in; 
+			animation-delay: .2s;
+			animation-fill-mode: forwards; 
+		}
+
+		.victory-text-image {
+			position: absolute;
+			top: 80px;
+			left: 0;
+			right: 0;
+			margin: auto;
+
+			visibility: hidden;
+			animation-name: fadeAndGrowIn; 
+			animation-duration: 1s; 
+			animation-timing-function: ease-in-out;  
+			animation-delay: .7s;
+			animation-fill-mode: forwards;
+		}
+
+		.game-button {
+			opacity: 0;
+			animation-name: fadeIn; 
+			animation-duration: 1.5s; 
+			animation-timing-function: ease-in-out;  
+			animation-delay: 2s;
+			animation-fill-mode: forwards;
+		}
+
+		@keyframes fadeIn {
+			0% {
+				opacity: 0.0;   
+			}
+			100% {
+				opacity: 1;
+			} 
+		}
+
+		@keyframes fadeAndGrowIn {
+			0% {
+				transform: scale(0);
+				opacity: 0.0;
+				visibility: visible;   
+			}
+			75% {
+				transform: scale(1.1); 
+			} 
+			100% {
+				transform: scale(1);
+				opacity: 1;
+				visibility: visible; 
+			}   
+		}
+
+		.star {
+			position: absolute;
+			animation-fill-mode: forwards;
+			opacity: 0;
+
+			&:nth-child(odd) { animation-name: spinFadeIn; }
+			&:nth-child(even) { animation-name: spinFadeInReverse; }
+		}
+
+		.star-1 { bottom: 10px; left: 15px; animation-duration: 1s;  animation-delay: 1.1s; }
+		.star-2 { top: 130px; left: 80px;   animation-duration: .4s; animation-delay: 1s; }
+		.star-3 { top: 60px; left: 300px;  animation-duration: .3s; animation-delay: 1.6s; }
+		.star-4 { top: 300px; left: 240px;  animation-duration: .3s; animation-delay: 1.2s; }
+		.star-5 { top: 160px; left: 30px;   animation-duration: .2s; animation-delay: 1.5s; }
+	}
+
+
+	// The screen shown when the user loses
+	.loss-screen {
+		width: 375px;
+		height: 375px;
+		float: right;
+		text-align: center;
+		background-size: contain;
+
+		.loss-text-image {
+			margin: 62px 0;
+		}
+	}
+
+}
